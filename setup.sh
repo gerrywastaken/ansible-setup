@@ -1,16 +1,24 @@
 #!/usr/bin/zsh
 # Install requirements
-sudo apt-get install openssh-server python-yaml python-paramiko python-jinja2
+sudo apt-get install \
+openssh-server \
+python-paramiko python-yaml python-jinja2 \
+cdbs debhelper dpkg-dev git-core reprepro
 
-#Install Ansible
-mkdir ~/gitRepos
+
+# Install Ansible
 git clone git://github.com/ansible/ansible.git ~/gitRepos/ansible
 cd ~/gitRepos/ansible
-pwd
-echo `which source`
-source hacking/env-setup
-echo "127.0.0.1" > ~/ansible_hosts
-export ANSIBLE_HOSTS=~/ansible_hosts
+# Create the installer. Currently the easiest way to install on Ubuntu.
+make deb
+# Run the installer
+sudo dpkg -i ../ansible*.deb
+# Make the installed ansible packages immediatly available for use
+hash -rf 
+rm ../ansible*.deb
 
-#Copy over ssh key to IP of the address you wish to configure
-ssh-copy-id 127.0.0.1
+git clone git://github.com/gerrywastaken/ansible-playbooks.git ~/gitRepos/ansible-playbooks
+cd ~/gitRepos/ansible-playbooks
+
+# Run our local playbook on a local connection and ask for the sudo password
+ansible-playbook -K --connection=local local.yml
