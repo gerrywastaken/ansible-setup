@@ -5,17 +5,21 @@ openssh-server \
 python-paramiko python-yaml python-jinja2 \
 cdbs debhelper dpkg-dev git-core reprepro
 
-
 # Install Ansible
-git clone git://github.com/ansible/ansible.git ~/gitRepos/ansible
-cd ~/gitRepos/ansible
+
+#git clone git://github.com/ansible/ansible.git ~/gitRepos/ansible
+#cd ~/gitRepos/ansible
 # Create the installer. Currently the easiest way to install on Ubuntu.
-make deb
+#make deb
 # Run the installer
-sudo dpkg -i ../ansible*.deb
+#sudo dpkg -i ../ansible*.deb
 # Make the installed ansible packages immediatly available for use
-hash -rf 
-rm ../ansible*.deb
+#hash -rf 
+#rm ../ansible*.deb
+
+sudo apt-add-repository ppa:rquillo/ansible
+sudo apt-get update
+sudo apt-get install ansible
 
 git clone git://github.com/gerrywastaken/ansible-playbooks.git ~/gitRepos/ansible-playbooks
 cd ~/gitRepos/ansible-playbooks
